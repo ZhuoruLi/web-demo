@@ -4,7 +4,16 @@ const state = {
   page: 1,
   total: 0,
   curr: 'popular',
+
 };
+const details = {
+  overview:"",
+  genres: [],
+  production_companies:[],
+  rating:0,
+  path:"",
+  title:""
+}
 
 // Controller
 const options = {
@@ -81,6 +90,30 @@ function loadMovies(page) {
 }
 
 loadMovies(state.page);
+
+function loadModel(movieId) {
+  // console.log(typeof state.movieList[0].id)
+
+  fetch(
+    `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
+    options
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      details.overview = response.overview;
+      details.rating = response.vote_average
+      details.genres = response.genres;
+      details.production_companies = response.production_companies;
+      details.title = response.title;
+      details.path = response.poster_path;
+      console.log(details)
+      // const targetMovie = state.movieList.find((movie) => {
+      //   return movie.id === Number(movieId);
+      // });
+      renderModel();
+    })
+    .catch((err) => console.error(err));
+}
 // fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options)
 //   .then(response => response.json())
 //   .then(response => {
@@ -89,6 +122,7 @@ loadMovies(state.page);
 //   .catch(err => console.error(err));
 
 // Viewpoint
+
 document
   .querySelector('.filter-select')
   .addEventListener('change', function () {
@@ -116,6 +150,68 @@ document
       }
     }
   });
+function createModal() {
+  const div = document.createElement('div');
+  div.id = 'modal';
+
+  div.innerHTML = `
+      <div class = "modal-container">
+        <div class = "close-modal">
+            <ion-icon name="close"></ion-icon>
+        </div>
+        <div class= "modal-content">
+            <div class="modal-img">
+                <img src="https://image.tmdb.org/t/p/w500${details.path}" >
+            </div>
+            <div class="modal-info">
+                <h2>${details.title}</h2>
+                <br>
+                <h3>Overview</h3>
+                <p class="modal-overview">${details.overview}</p>
+                <h3>Genres</h3>
+                <div class="genre-container">
+                    
+                </div>
+                <h3>Rating</h3>
+                <p>${details.rating}</p>
+                <h3>Production companies</h3>
+                <div class="production-container">
+                </div>
+            </div>
+        </div>
+      </div>
+  `;
+  const genreContainer = div.querySelector('.genre-container');
+  details.genres.forEach(genre => {
+    const genreItems = document.createElement('div');
+    genreItems.className = 'genre-item';
+    genreItems.innerText = genre.name;
+    genreContainer.appendChild(genreItems);
+  })
+  const productionContainer = div.querySelector('.production-container');
+  details.production_companies.forEach(company => {
+    if (company.logo_path) {
+      const companyIcons = document.createElement('div');
+      companyIcons.className = 'production-item';
+      
+      companyIcons.innerHTML = `<img src="https://image.tmdb.org/t/p/w500/${company.logo_path}">`
+      productionContainer.appendChild(companyIcons);
+    }
+
+  })
+  const closeModalIcon = div.querySelector('.close-modal ion-icon');
+  closeModalIcon.addEventListener('click',function() {
+    div.style = "display : none"
+  })
+
+  return div;
+}
+function renderModel() {
+  
+  document.querySelector(".modal-container").innerHTML = "";
+  document.querySelector(".modal-container").append(createModal());
+  
+}
 function createMovieNode(movie) {
   const div = document.createElement('div');
   div.className = 'movieCard';
@@ -137,6 +233,7 @@ function createMovieNode(movie) {
           </div>
         </div>
   `;
+
   return div;
 }
 
@@ -151,5 +248,19 @@ function renderView() {
     movieContainer.append(li);
   });
 
+  movieContainer.addEventListener('click', function (e) {
+    const element = e.target;
+    if (element.matches('.movie-card-title')) {
+      const movie = element.closest('.movieCard');
+      console.log(movie.id);
+      loadModel(movie.id);
+    }
+    // const cardElement = element.parent;
+    // console.log(cardElement.id);
+    // if (cardElement) {
+    //   const movieId = cardElement.id;
 
+    //   loadModel(movieId);
+    // }
+  });
 }
