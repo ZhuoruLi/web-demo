@@ -1,0 +1,88 @@
+/* *{
+    margin:0;
+    padding: 0;
+    box-sizing: inherit;
+} */
+nav {
+  display: flex;
+  align-items: center;
+}
+
+
+.logo-container {
+  width: 100px;
+}
+
+.nav-bar {
+  display: flex;
+}
+
+.nav-bar li {
+  list-style: none;
+  margin-left: 3rem;
+  font-size: 1.5rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 500px;
+  margin: 1rem auto;
+}
+
+.list-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 3rem;
+}
+
+.btn {
+  padding: 8px;
+  background-color: #01b4e4;
+  border: 1px solid white;
+  color: white;
+}
+
+.list-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 3rem;
+}
+
+.movieCard {
+  text-align: center;
+  box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.1);
+}
+.movie-card-title {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  cursor: pointer;
+}
+
+.movie-card-rating {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  align-items: center;
+}
+
+.movie-card-rating .rating {
+  display: flex;
+  align-items: center;
+}
+/* .ion-md-star:before {
+  content: "";
+} */
+ion-icon {
+  font-size: 32px;
+}
+
+ion-icon[name="star"] {
+  color: #f5c518;
+}
+ion-icon[name="heart-outline"] {
+  color: black; /* change the color as per your needs */
+  font-size: 24px; /* adjust the size as required */
+}
+
