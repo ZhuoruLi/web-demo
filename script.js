@@ -151,17 +151,5 @@ function renderView() {
     movieContainer.append(li);
   });
 
-  // const neighborsContainer = document.querySelector('.neighbors');
-  // const neighborsTitle = document.querySelector('.neighbors-title');
 
-  // if (state.neighbors.length) {
-  //   neighborsTitle.className = 'neighbors-title show';
-  // } else {
-  //   neighborsTitle.className = 'neighbors-title';
-  // }
-  // neighborsContainer.innerHTML = '';
-  // state.neighbors.forEach((country) => {
-  //   const li = createCountryNode(country);
-  //   neighborsContainer.append(li);
-  // });
 }
