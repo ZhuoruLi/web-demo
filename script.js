@@ -261,7 +261,6 @@ function createMovieNode(movie) {
       heartIcon.style.color = 'red';
       state.likedList.push(movie);
     }
-    console.log(state.likedList);
   });
 
   return div;
