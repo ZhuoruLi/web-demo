@@ -5,6 +5,7 @@ const state = {
   total: 0,
   curr: 'popular',
   folder: 'Home',
+  likedList:[]
 };
 const details = {
   overview: '',
@@ -36,9 +37,9 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        state.movieList.forEach((movie) => {
-          movie.liked = false;
-        });
+        // state.movieList.forEach((movie) => {
+        //   movie.liked = false;
+        // });
         state.total = response.total_pages;
         console.log(state.movieList);
         renderView();
@@ -54,9 +55,9 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        state.movieList.forEach((movie) => {
-          movie.liked = false;
-        });
+        // state.movieList.forEach((movie) => {
+        //   movie.liked = false;
+        // });
         state.total = response.total_pages;
 
         renderView();
@@ -72,9 +73,9 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        state.movieList.forEach((movie) => {
-          movie.liked = false;
-        });
+        // state.movieList.forEach((movie) => {
+        //   movie.liked = false;
+        // });
         state.total = response.total_pages;
 
         renderView();
@@ -90,9 +91,9 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        state.movieList.forEach((movie) => {
-          movie.liked = false;
-        });
+        // state.movieList.forEach((movie) => {
+        //   movie.liked = false;
+        // });
         state.total = response.total_pages;
 
         renderView();
@@ -251,7 +252,14 @@ function createMovieNode(movie) {
   let heartIcon = div.querySelector(
     'ion-icon[name="heart-empty"], ion-icon[name="heart"]'
   );
-  if (movie.liked === true) {
+
+  liked = false;
+  state.likedList.forEach(e => {
+    if (e.id === movie.id) {
+      liked = true;
+    }
+  })
+  if (liked === true) {
     heartIcon.name = 'heart';
     heartIcon.style.color = 'red';
   }
@@ -260,22 +268,16 @@ function createMovieNode(movie) {
     if (heartIcon.name === 'heart') {
       heartIcon.name = 'heart-empty';
       heartIcon.style.color = 'black';
-      const currmovie = heartIcon.closest('.movieCard');
-      state.movieList.forEach((movie) => {
-        if (movie.id === Number(currmovie.id)) {
-          movie.liked = false;
-        }
+      
+      state.likedList = state.likedList.filter((movie) => {
+        return movie.id !== Number(div.id)
       });
     } else {
       heartIcon.name = 'heart';
       heartIcon.style.color = 'red';
-      const currmovie = heartIcon.closest('.movieCard');
-      state.movieList.forEach((movie) => {
-        if (movie.id === Number(currmovie.id)) {
-          movie.liked = true;
-        }
-      });
+      state.likedList.push(movie);
     }
+    console.log(state.likedList);
   });
 
   return div;
@@ -302,10 +304,8 @@ function renderView() {
       }
     });
   } else if (state.folder === 'Liked') {
-    likedList = state.movieList.filter((movie) => {
-      return movie.liked === true;
-    });
-    likedList.forEach((movie) => {
+
+    state.likedList.forEach((movie) => {
       const li = createMovieNode(movie);
       movieContainer.append(li);
     });
