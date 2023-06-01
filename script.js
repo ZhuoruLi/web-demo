@@ -37,11 +37,9 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        // state.movieList.forEach((movie) => {
-        //   movie.liked = false;
-        // });
+
         state.total = response.total_pages;
-        console.log(state.movieList);
+        
         renderView();
       })
       .catch((err) => console.error(err));
@@ -55,9 +53,7 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        // state.movieList.forEach((movie) => {
-        //   movie.liked = false;
-        // });
+
         state.total = response.total_pages;
 
         renderView();
@@ -73,9 +69,7 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        // state.movieList.forEach((movie) => {
-        //   movie.liked = false;
-        // });
+
         state.total = response.total_pages;
 
         renderView();
@@ -91,9 +85,7 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
-        // state.movieList.forEach((movie) => {
-        //   movie.liked = false;
-        // });
+
         state.total = response.total_pages;
 
         renderView();
@@ -105,7 +97,6 @@ function loadMovies(page) {
 loadMovies(state.page);
 
 function loadModel(movieId) {
-  // console.log(typeof state.movieList[0].id)
 
   fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, options)
     .then((response) => response.json())
@@ -116,20 +107,13 @@ function loadModel(movieId) {
       details.production_companies = response.production_companies;
       details.title = response.title;
       details.path = response.poster_path;
-      console.log(details);
-      // const targetMovie = state.movieList.find((movie) => {
-      //   return movie.id === Number(movieId);
-      // });
+      
+
       renderModel();
     })
     .catch((err) => console.error(err));
 }
-// fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options)
-//   .then(response => response.json())
-//   .then(response => {
-//     console.log(response.results[0])
-//   })
-//   .catch(err => console.error(err));
+
 
 // Viewpoint
 document.querySelector('.nav-bar').addEventListener('click', (e) => {
