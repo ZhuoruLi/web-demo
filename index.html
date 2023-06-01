@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- <link
         rel="stylesheet"
@@ -11,46 +11,45 @@
         integrity="sha512-JApjWRnfonFeGBY7t4yq8SWr1A6xVYEJgO/UMIYONxaR3C9GETKUg0LharbJncEzJF5Nmiv+Pr5QNulr81LjGQ=="
         crossorigin="anonymous"
     /> -->
-    
 
-
-    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    
-</head>
-<body>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <header>
-        <nav>
-            <div class = "logo-container">
-                <img src="https://uswgq.csb.app/logo.svg" >
-            </div>
-            <div>
-                <ul class = "nav-bar">
-                    <li class = "tab-item active" name = "HOME">HOME</li>
-                    <li class = "tab-item" name = "Liked">LIKED</li>
-                </ul>
-            </div>
-        </nav>
+      <nav>
+        <div class="logo-container">
+          <img src="https://uswgq.csb.app/logo.svg" />
+        </div>
+        <div>
+          <ul class="nav-bar">
+            <li class="tab-item active" name="HOME">HOME</li>
+            <li class="tab-item" name="Liked">LIKED LIST</li>
+          </ul>
+        </div>
+      </nav>
     </header>
     <main>
-        <div>
-            <select class = "filter-select">
-                <option value="popular">Popular</option>
-                <option value="Now playing">Now playing</option>
-                <option value="Top rated">Top rated</option>
-                <option value="Up coming">Up coming</option>
-            </select>
-        </div>
-        <div class = "pagination-container">
-            <button class = "btn">prev</button>
-            <p id = "total-position">1 / 38497</p>
-            <button class = "btn">next</button>
-        </div>
-        <div>
-            <div class = "list-container" id = movieList></div>
-        </div>
-        <!-- <i class="ion-ios-infinite-outline"></i> -->
-
+      <div>
+        <select class="filter-select">
+          <option value="popular">Popular</option>
+          <option value="Now playing">Now playing</option>
+          <option value="Top rated">Top rated</option>
+          <option value="Up coming">Up coming</option>
+        </select>
+      </div>
+      <div class="pagination-container">
+        <button class="btn">prev</button>
+        <p id="total-position">1 / 38497</p>
+        <button class="btn">next</button>
+      </div>
+      <div>
+        <div class="list-container" id="movieList"></div>
+      </div>
+      <!-- <i class="ion-ios-infinite-outline"></i> -->
     </main>
     <div class="modal-container"></div>
     <script src="script.js"></script>
@@ -84,5 +83,5 @@
     </div> -->
 
     <!-- <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>     -->
-</body>
+  </body>
 </html>

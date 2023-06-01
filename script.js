@@ -251,6 +251,10 @@ function createMovieNode(movie) {
   let heartIcon = div.querySelector(
     'ion-icon[name="heart-empty"], ion-icon[name="heart"]'
   );
+  if (movie.liked === true) {
+    heartIcon.name = 'heart';
+    heartIcon.style.color = 'red';
+  }
 
   heartIcon.addEventListener('click', function () {
     if (heartIcon.name === 'heart') {
