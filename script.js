@@ -4,16 +4,16 @@ const state = {
   page: 1,
   total: 0,
   curr: 'popular',
-
+  folder: 'Home',
 };
 const details = {
-  overview:"",
+  overview: '',
   genres: [],
-  production_companies:[],
-  rating:0,
-  path:"",
-  title:""
-}
+  production_companies: [],
+  rating: 0,
+  path: '',
+  title: '',
+};
 
 // Controller
 const options = {
@@ -36,8 +36,11 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
+        state.movieList.forEach((movie) => {
+          movie.liked = false;
+        });
         state.total = response.total_pages;
-        console.log(response);
+        console.log(state.movieList);
         renderView();
       })
       .catch((err) => console.error(err));
@@ -51,8 +54,11 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
+        state.movieList.forEach((movie) => {
+          movie.liked = false;
+        });
         state.total = response.total_pages;
-        console.log(response);
+
         renderView();
       })
       .catch((err) => console.error(err));
@@ -66,8 +72,11 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
+        state.movieList.forEach((movie) => {
+          movie.liked = false;
+        });
         state.total = response.total_pages;
-        console.log(response);
+
         renderView();
       })
       .catch((err) => console.error(err));
@@ -81,8 +90,11 @@ function loadMovies(page) {
       })
       .then((response) => {
         state.movieList = response.results;
+        state.movieList.forEach((movie) => {
+          movie.liked = false;
+        });
         state.total = response.total_pages;
-        console.log(response);
+
         renderView();
       })
       .catch((err) => console.error(err));
@@ -94,19 +106,16 @@ loadMovies(state.page);
 function loadModel(movieId) {
   // console.log(typeof state.movieList[0].id)
 
-  fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
-    options
-  )
+  fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, options)
     .then((response) => response.json())
     .then((response) => {
       details.overview = response.overview;
-      details.rating = response.vote_average
+      details.rating = response.vote_average;
       details.genres = response.genres;
       details.production_companies = response.production_companies;
       details.title = response.title;
       details.path = response.poster_path;
-      console.log(details)
+      console.log(details);
       // const targetMovie = state.movieList.find((movie) => {
       //   return movie.id === Number(movieId);
       // });
@@ -122,7 +131,15 @@ function loadModel(movieId) {
 //   .catch(err => console.error(err));
 
 // Viewpoint
-
+document.querySelector('.nav-bar').addEventListener('click', (e) => {
+  if (e.target.matches('[name = "Liked"]')) {
+    state.folder = 'Liked';
+    renderView();
+  } else if (e.target.matches('[name = "HOME"]')) {
+    state.folder = 'Home';
+    renderView();
+  }
+});
 document
   .querySelector('.filter-select')
   .addEventListener('change', function () {
@@ -150,6 +167,7 @@ document
       }
     }
   });
+
 function createModal() {
   const div = document.createElement('div');
   div.id = 'modal';
@@ -182,35 +200,32 @@ function createModal() {
       </div>
   `;
   const genreContainer = div.querySelector('.genre-container');
-  details.genres.forEach(genre => {
+  details.genres.forEach((genre) => {
     const genreItems = document.createElement('div');
     genreItems.className = 'genre-item';
     genreItems.innerText = genre.name;
     genreContainer.appendChild(genreItems);
-  })
+  });
   const productionContainer = div.querySelector('.production-container');
-  details.production_companies.forEach(company => {
+  details.production_companies.forEach((company) => {
     if (company.logo_path) {
       const companyIcons = document.createElement('div');
       companyIcons.className = 'production-item';
-      
-      companyIcons.innerHTML = `<img src="https://image.tmdb.org/t/p/w500/${company.logo_path}">`
+
+      companyIcons.innerHTML = `<img src="https://image.tmdb.org/t/p/w500/${company.logo_path}">`;
       productionContainer.appendChild(companyIcons);
     }
-
-  })
+  });
   const closeModalIcon = div.querySelector('.close-modal ion-icon');
-  closeModalIcon.addEventListener('click',function() {
-    div.style = "display : none"
-  })
+  closeModalIcon.addEventListener('click', function () {
+    div.style = 'display : none';
+  });
 
   return div;
 }
 function renderModel() {
-  
-  document.querySelector(".modal-container").innerHTML = "";
-  document.querySelector(".modal-container").append(createModal());
-  
+  document.querySelector('.modal-container').innerHTML = '';
+  document.querySelector('.modal-container').append(createModal());
 }
 function createMovieNode(movie) {
   const div = document.createElement('div');
@@ -233,6 +248,31 @@ function createMovieNode(movie) {
           </div>
         </div>
   `;
+  let heartIcon = div.querySelector(
+    'ion-icon[name="heart-empty"], ion-icon[name="heart"]'
+  );
+
+  heartIcon.addEventListener('click', function () {
+    if (heartIcon.name === 'heart') {
+      heartIcon.name = 'heart-empty';
+      heartIcon.style.color = 'black';
+      const currmovie = heartIcon.closest('.movieCard');
+      state.movieList.forEach((movie) => {
+        if (movie.id === Number(currmovie.id)) {
+          movie.liked = false;
+        }
+      });
+    } else {
+      heartIcon.name = 'heart';
+      heartIcon.style.color = 'red';
+      const currmovie = heartIcon.closest('.movieCard');
+      state.movieList.forEach((movie) => {
+        if (movie.id === Number(currmovie.id)) {
+          movie.liked = true;
+        }
+      });
+    }
+  });
 
   return div;
 }
@@ -243,24 +283,36 @@ function renderView() {
   const movieContainer = document.querySelector('.list-container');
 
   movieContainer.innerHTML = '';
-  state.movieList.forEach((movie) => {
-    const li = createMovieNode(movie);
-    movieContainer.append(li);
-  });
+  if (state.folder === 'Home') {
+    state.movieList.forEach((movie) => {
+      const li = createMovieNode(movie);
+      movieContainer.append(li);
+    });
 
-  movieContainer.addEventListener('click', function (e) {
-    const element = e.target;
-    if (element.matches('.movie-card-title')) {
-      const movie = element.closest('.movieCard');
-      console.log(movie.id);
-      loadModel(movie.id);
-    }
-    // const cardElement = element.parent;
-    // console.log(cardElement.id);
-    // if (cardElement) {
-    //   const movieId = cardElement.id;
+    movieContainer.addEventListener('click', function (e) {
+      const element = e.target;
+      if (element.matches('.movie-card-title')) {
+        const movie = element.closest('.movieCard');
 
-    //   loadModel(movieId);
-    // }
-  });
+        loadModel(movie.id);
+      }
+    });
+  } else if (state.folder === 'Liked') {
+    likedList = state.movieList.filter((movie) => {
+      return movie.liked === true;
+    });
+    likedList.forEach((movie) => {
+      const li = createMovieNode(movie);
+      movieContainer.append(li);
+    });
+
+    movieContainer.addEventListener('click', function (e) {
+      const element = e.target;
+      if (element.matches('.movie-card-title')) {
+        const movie = element.closest('.movieCard');
+
+        loadModel(movie.id);
+      }
+    });
+  }
 }
